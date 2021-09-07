@@ -39,17 +39,17 @@ func waitReadyExpectProc(exproc *expect.ExpectProcess, readyStrs []string) error
 	return err
 }
 
-func spawnWithExpect(args []string, expected string) error {
-	return spawnWithExpects(args, []string{expected}...)
+func spawnWithExpect(args []string, envVars map[string]string, expected string) error {
+	return spawnWithExpects(args, envVars, []string{expected}...)
 }
 
-func spawnWithExpects(args []string, xs ...string) error {
-	_, err := spawnWithExpectLines(args, xs...)
+func spawnWithExpects(args []string, envVars map[string]string, xs ...string) error {
+	_, err := spawnWithExpectLines(args, envVars, xs...)
 	return err
 }
 
-func spawnWithExpectLines(args []string, xs ...string) ([]string, error) {
-	proc, err := spawnCmd(args)
+func spawnWithExpectLines(args []string, envVars map[string]string, xs ...string) ([]string, error) {
+	proc, err := spawnCmd(args, envVars)
 	if err != nil {
 		return nil, err
 	}

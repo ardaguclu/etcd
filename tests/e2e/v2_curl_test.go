@@ -188,13 +188,13 @@ func cURLPrefixArgs(clus *etcdProcessCluster, method string, req cURLReq) []stri
 }
 
 func cURLPost(clus *etcdProcessCluster, req cURLReq) error {
-	return spawnWithExpect(cURLPrefixArgs(clus, "POST", req), req.expected)
+	return spawnWithExpect(cURLPrefixArgs(clus, "POST", req), nil, req.expected)
 }
 
 func cURLPut(clus *etcdProcessCluster, req cURLReq) error {
-	return spawnWithExpect(cURLPrefixArgs(clus, "PUT", req), req.expected)
+	return spawnWithExpect(cURLPrefixArgs(clus, "PUT", req), nil, req.expected)
 }
 
 func cURLGet(clus *etcdProcessCluster, req cURLReq) error {
-	return spawnWithExpect(cURLPrefixArgs(clus, "GET", req), req.expected)
+	return spawnWithExpect(cURLPrefixArgs(clus, "GET", req), nil, req.expected)
 }

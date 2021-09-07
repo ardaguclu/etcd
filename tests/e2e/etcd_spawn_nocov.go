@@ -18,6 +18,7 @@
 package e2e
 
 import (
+	"fmt"
 	"os"
 	"strings"
 
@@ -27,17 +28,23 @@ import (
 
 const noOutputLineCount = 0 // regular binaries emit no extra lines
 
-func spawnCmd(args []string) (*expect.ExpectProcess, error) {
-	return spawnCmdWithLogger(zap.NewNop(), args)
+func spawnCmd(args []string, envVars map[string]string) (*expect.ExpectProcess, error) {
+	var env []string
+	if envVars != nil {
+		for k, v := range envVars {
+			env = append(env, fmt.Sprintf("%s=%s", k, v))
+		}
+	}
+	return spawnCmdWithLogger(zap.NewNop(), args, env)
 }
 
-func spawnCmdWithLogger(lg *zap.Logger, args []string) (*expect.ExpectProcess, error) {
+func spawnCmdWithLogger(lg *zap.Logger, args []string, envVars []string) (*expect.ExpectProcess, error) {
 	wd, err := os.Getwd()
 	if err != nil {
 		return nil, err
 	}
 	if strings.HasSuffix(args[0], "/etcdctl3") {
-		env := append(os.Environ(), "ETCDCTL_API=3")
+		env := append(envVars, "ETCDCTL_API=3")
 		lg.Info("spawning process with ETCDCTL_API=3", zap.Strings("args", args), zap.String("working-dir", wd))
 		return expect.NewExpectWithEnv(ctlBinPath, args[1:], env)
 	}

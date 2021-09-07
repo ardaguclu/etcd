@@ -132,7 +132,7 @@ func TestEtctlutlMigrate(t *testing.T) {
 
 			t.Log("Write keys to ensure wal snapshot is created and all v3.5 fields are set...")
 			for i := 0; i < 10; i++ {
-				if err = spawnWithExpect(append(prefixArgs, "put", fmt.Sprintf("%d", i), "value"), "OK"); err != nil {
+				if err = spawnWithExpect(append(prefixArgs, "put", fmt.Sprintf("%d", i), "value"), nil, "OK"); err != nil {
 					t.Fatal(err)
 				}
 			}
@@ -147,7 +147,7 @@ func TestEtctlutlMigrate(t *testing.T) {
 			if tc.force {
 				args = append(args, "--force")
 			}
-			err = spawnWithExpect(args, tc.expectLogsSubString)
+			err = spawnWithExpect(args, nil, tc.expectLogsSubString)
 			if err != nil {
 				t.Fatal(err)
 			}

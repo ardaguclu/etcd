@@ -111,7 +111,7 @@ func testCtlV3MoveLeader(t *testing.T, cfg etcdProcessClusterConfig) {
 	}
 	for i, tc := range tests {
 		cmdArgs := append(tc.prefixes, "move-leader", types.ID(transferee).String())
-		if err := spawnWithExpect(cmdArgs, tc.expect); err != nil {
+		if err := spawnWithExpect(cmdArgs, cx.envMap, tc.expect); err != nil {
 			t.Fatalf("#%d: %v", i, err)
 		}
 	}
